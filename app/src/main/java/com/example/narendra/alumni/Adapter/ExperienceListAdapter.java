@@ -1,4 +1,4 @@
-package com.example.narendra.alumni.Adpater;
+package com.example.narendra.alumni.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import com.example.narendra.alumni.Education_List;
 import com.example.narendra.alumni.Model.DefaultResponse;
 import com.example.narendra.alumni.Model.Experience;
 import com.example.narendra.alumni.Model.SharedUser;
+import com.example.narendra.alumni.Model.User;
 import com.example.narendra.alumni.R;
 import com.example.narendra.alumni.SharedMemory.SharedPrefManager;
 
@@ -26,12 +27,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ExperienceListAdpater extends RecyclerView.Adapter<ExperienceListAdpater.ExperienceViewHolder> {
+public class ExperienceListAdapter extends RecyclerView.Adapter<ExperienceListAdapter.ExperienceViewHolder> {
 
     List<Experience> experienceList;
     Context context;
 
-    public ExperienceListAdpater(List<Experience> experienceList, Context context) {
+    public ExperienceListAdapter(List<Experience> experienceList, Context context) {
         this.experienceList = experienceList ;
         this.context = context;
     }
@@ -77,7 +78,7 @@ public class ExperienceListAdpater extends RecyclerView.Adapter<ExperienceListAd
         public void onClick(View v) {
             int i=getAdapterPosition();
             Experience experience1=experienceList.get(i);
-            SharedUser sharedUser=SharedPrefManager.getmInstance(context).getSharedUser();
+            User user=SharedPrefManager.getmInstance(context).getUser();
             switch (v.getId()){
                 case R.id.expr_edit:
                     Intent intent = new Intent(context, Add_Experience.class);
@@ -93,7 +94,7 @@ public class ExperienceListAdpater extends RecyclerView.Adapter<ExperienceListAd
 
                 case R.id.expr_delete:
                     Call<DefaultResponse> responseCall = RetrofitClient.getInstance().getInterPreter()
-                            .delExpr(sharedUser.getId(),experience1.getTag());
+                            .delExpr(user.getId(),experience1.getTag());
                     responseCall.enqueue(new Callback<DefaultResponse>() {
                         @Override
                         public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {

@@ -1,4 +1,4 @@
-package com.example.narendra.alumni.Adpater;
+package com.example.narendra.alumni.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import com.example.narendra.alumni.Education_List;
 import com.example.narendra.alumni.Model.DefaultResponse;
 import com.example.narendra.alumni.Model.Education;
 import com.example.narendra.alumni.Model.SharedUser;
+import com.example.narendra.alumni.Model.User;
 import com.example.narendra.alumni.R;
 import com.example.narendra.alumni.SharedMemory.SharedPrefManager;
 
@@ -26,12 +27,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EducationListAdpater extends RecyclerView.Adapter<EducationListAdpater.EducationViewHolder> {
+public class EducationListAdapter extends RecyclerView.Adapter<EducationListAdapter.EducationViewHolder> {
 
     List<Education> educationList;
     Context context;
 
-    public EducationListAdpater(List<Education> educationList, Context context) {
+    public EducationListAdapter(List<Education> educationList, Context context) {
         this.educationList = educationList;
         this.context = context;
     }
@@ -77,7 +78,7 @@ public class EducationListAdpater extends RecyclerView.Adapter<EducationListAdpa
         public void onClick(View v) {
             int i=getAdapterPosition();
             Education education1=educationList.get(i);
-            SharedUser sharedUser=SharedPrefManager.getmInstance(context).getSharedUser();
+            User user=SharedPrefManager.getmInstance(context).getUser();
             switch (v.getId()){
                 case R.id.edu_edit:
                     Intent intent = new Intent(context, Add_Education.class);
@@ -93,7 +94,7 @@ public class EducationListAdpater extends RecyclerView.Adapter<EducationListAdpa
 
                 case R.id.edu_delete:
                     Call<DefaultResponse> responseCall = RetrofitClient.getInstance().getInterPreter()
-                            .delEdu(sharedUser.getId(),education1.getTag());
+                            .delEdu(user.getId(),education1.getTag());
                     responseCall.enqueue(new Callback<DefaultResponse>() {
                         @Override
                         public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {

@@ -1,4 +1,4 @@
-package com.example.narendra.alumni.Adpater;
+package com.example.narendra.alumni.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.narendra.alumni.Model.Education;
 import com.example.narendra.alumni.Model.Experience;
@@ -14,24 +15,24 @@ import com.example.narendra.alumni.R;
 
 import java.util.List;
 
-public class ExperienceAdpater extends RecyclerView.Adapter<ExperienceAdpater.ExperienceViewHolder> {
+public class ExperienceAdapter extends RecyclerView.Adapter<ExperienceAdapter.ExperienceViewHolder> {
     List<Experience> experienceList;
     Context context;
 
-    public ExperienceAdpater(List<Experience> experienceList, Context context) {
+    public ExperienceAdapter(List<Experience> experienceList, Context context) {
         this.experienceList = experienceList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public ExperienceAdpater.ExperienceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ExperienceAdapter.ExperienceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(context).inflate(R.layout.experiance_card,parent,false);
-        return new ExperienceAdpater.ExperienceViewHolder(view);
+        return new ExperienceAdapter.ExperienceViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ExperienceAdpater.ExperienceViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ExperienceAdapter.ExperienceViewHolder holder, int position) {
         Experience experience= experienceList.get(position);
         holder.comp.setText(experience.getCompany());
         holder.desig.setText(experience.getDesig());
@@ -43,6 +44,21 @@ public class ExperienceAdpater extends RecyclerView.Adapter<ExperienceAdpater.Ex
     @Override
     public int getItemCount() {
         return experienceList.size();
+    }
+
+    public void removeItem(int position) {
+        experienceList.remove(position);
+        notifyItemRemoved(position);
+        Toast.makeText(context, "Removed", Toast.LENGTH_SHORT).show();
+    }
+
+    public void editItem() {
+        notifyDataSetChanged();
+    }
+
+    public void undoItem(Experience undoExpr, int position) {
+        experienceList.add(undoExpr);
+        notifyItemInserted(position);
     }
 
     class ExperienceViewHolder extends RecyclerView.ViewHolder {

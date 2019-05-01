@@ -1,4 +1,4 @@
-package com.example.narendra.alumni.Adpater;
+package com.example.narendra.alumni.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,18 +7,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.narendra.alumni.Api.RetrofitClient;
+import com.example.narendra.alumni.Education_List;
+import com.example.narendra.alumni.Model.DefaultResponse;
 import com.example.narendra.alumni.Model.Education;
 import com.example.narendra.alumni.R;
 
 import java.util.List;
 
-public class EducationAdpater extends RecyclerView.Adapter<EducationAdpater.EducationViewHolder> {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class EducationAdapter extends RecyclerView.Adapter<EducationAdapter.EducationViewHolder> {
 
     List<Education> educationList;
     Context context;
 
-    public EducationAdpater(List<Education> educationList, Context context) {
+    public EducationAdapter(List<Education> educationList, Context context) {
         this.educationList = educationList;
         this.context = context;
     }
@@ -43,6 +51,21 @@ public class EducationAdpater extends RecyclerView.Adapter<EducationAdpater.Educ
     @Override
     public int getItemCount() {
         return educationList.size();
+    }
+
+    public void removeItem(int position) {
+        educationList.remove(position);
+        notifyItemRemoved(position);
+        Toast.makeText(context, "Removed", Toast.LENGTH_SHORT).show();
+    }
+
+    public void editItem() {
+        notifyDataSetChanged();
+    }
+
+    public void undoItem(Education undoEdu, int position) {
+        educationList.add(undoEdu);
+        notifyItemInserted(position);
     }
 
     class EducationViewHolder extends RecyclerView.ViewHolder {
